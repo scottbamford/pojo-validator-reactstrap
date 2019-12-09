@@ -4,7 +4,7 @@ import { ValidatedFormFeedback } from './ValidatedFormFeedback';
 import { ValidationErrors } from 'pojo-validator';
 
 export interface ValidatedInputProps extends InputProps {
-    validationErrors: ValidationErrors | Array<string> | string
+    validationErrors: ValidationErrors | Array<string> | string | undefined | null,
     hideFormFeedback?: boolean,
     component?: React.ComponentClass | React.StatelessComponent | React.FunctionComponent
 }
@@ -19,7 +19,9 @@ export const ValidatedInput = (props: ValidatedInputProps) => {
 
     // Find the errors based on the types we support.
     let errors: Array<string> = [];
-    if (typeof validationErrors === 'string') {
+    if (!validationErrors) {
+        // Errors can stay as an empty array.
+    } else if (typeof validationErrors === 'string') {
         errors = [validationErrors];
     } else if (Array.isArray(validationErrors)) {
         errors = validationErrors;

@@ -4,7 +4,7 @@ import { ValidationErrors } from 'pojo-validator';
 
 export interface ValidatedFormFeedbackProps {
     name: string | undefined,
-    validationErrors: ValidationErrors | Array<string> | string
+    validationErrors: ValidationErrors | Array<string> | string | undefined | null,
 }
 
 /**
@@ -16,8 +16,10 @@ export const ValidatedFormFeedback = (props: ValidatedFormFeedbackProps) => {
     const { validationErrors, ...rest } = props;
 
     // Find the errors based on the types we support.
-    let errors = [];
-    if (typeof validationErrors === 'string') {
+    let errors: Array<string> = [];
+    if (!validationErrors) {
+        // Errors can stay as an empty array.
+    } else if (typeof validationErrors === 'string') {
         errors = [validationErrors];
     } else if (Array.isArray(validationErrors)) {
         errors = validationErrors;
